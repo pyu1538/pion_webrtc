@@ -9,6 +9,7 @@ package webrtc
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -494,8 +495,17 @@ func addTransceiverSDP(
 			return false, err
 		}
 	}
-
+	/*
+		ssrc1 := SSRC(randutil.NewMathRandomGenerator().Uint32())
+		cname1 := "yp-cname1"
+		ssrc2 := SSRC(randutil.NewMathRandomGenerator().Uint32())
+		cname2 := "yp-cname2"
+		media = media.WithValueAttribute(sdp.AttrKeySSRCGroup, fmt.Sprintf("%d %d", ssrc1, ssrc2))
+		media = media.WithValueAttribute(sdp.AttrKeySSRC, fmt.Sprintf("%d cname:%s", ssrc1, cname1))
+		media = media.WithValueAttribute(sdp.AttrKeySSRC, fmt.Sprintf("%d cname:%s", ssrc2, cname2))
+	*/
 	d.WithMedia(media)
+	log.Println(d)
 
 	return true, nil
 }

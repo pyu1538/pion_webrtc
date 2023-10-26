@@ -3,6 +3,7 @@ module github.com/pion/webrtc/v4
 go 1.13
 
 require (
+	github.com/gorilla/websocket v1.5.0
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.17.0 // indirect
 	github.com/pion/datachannel v1.5.5

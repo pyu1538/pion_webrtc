@@ -22,6 +22,9 @@ import (
 // nolint:gocognit
 func main() {
 	// Everything below is the Pion WebRTC API! Thanks for using it ❤️.
+	// Create a MediaEngine object to configure the supported codec
+	m := &webrtc.MediaEngine{}
+	m.RegisterDefaultCodecs()
 
 	// Prepare the configuration
 	config := webrtc.Configuration{

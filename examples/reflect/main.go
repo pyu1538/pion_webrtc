@@ -23,16 +23,24 @@ func main() {
 
 	// Create a MediaEngine object to configure the supported codec
 	m := &webrtc.MediaEngine{}
-
-	// Setup the codecs you want to use.
-	// We'll use a VP8 and Opus but you can also define your own
-	if err := m.RegisterCodec(webrtc.RTPCodecParameters{
-		RTPCodecCapability: webrtc.RTPCodecCapability{MimeType: webrtc.MimeTypeVP8, ClockRate: 90000, Channels: 0, SDPFmtpLine: "", RTCPFeedback: nil},
-		PayloadType:        96,
-	}, webrtc.RTPCodecTypeVideo); err != nil {
-		panic(err)
-	}
-
+	m.RegisterDefaultCodecs()
+	/*
+		// Setup the codecs you want to use.
+		// We'll use a VP8 and Opus but you can also define your own
+		if err := m.RegisterCodec(webrtc.RTPCodecParameters{
+			RTPCodecCapability: webrtc.RTPCodecCapability{MimeType: webrtc.MimeTypeVP8, ClockRate: 90000, Channels: 0, SDPFmtpLine: "", RTCPFeedback: nil},
+			PayloadType:        96,
+		}, webrtc.RTPCodecTypeVideo); err != nil {
+			panic(err)
+		}
+		// Register video rtx stream
+		if err := m.RegisterCodec(webrtc.RTPCodecParameters{
+			RTPCodecCapability: webrtc.RTPCodecCapability{MimeType: "video/rtx", ClockRate: 90000, Channels: 0, SDPFmtpLine: "", RTCPFeedback: nil},
+			PayloadType:        97,
+		}, webrtc.RTPCodecTypeVideo); err != nil {
+			panic(err)
+		}
+	*/
 	// Create a InterceptorRegistry. This is the user configurable RTP/RTCP Pipeline.
 	// This provides NACKs, RTCP Reports and other features. If you use `webrtc.NewPeerConnection`
 	// this is enabled by default. If you are manually managing You MUST create a InterceptorRegistry
@@ -82,12 +90,23 @@ func main() {
 		panic(err)
 	}
 
-	// Add this newly created track to the PeerConnection
 	rtpSender, err := peerConnection.AddTrack(outputTrack)
 	if err != nil {
 		panic(err)
 	}
+	/*
+		// Create Track that we send video rtx stream back to browser on
+		outputTrackRTX, err := webrtc.NewTrackLocalStaticRTP(webrtc.RTPCodecCapability{MimeType: "video/rtx"}, "video_rtx", "pion")
+		if err != nil {
+			panic(err)
+		}
+		peerConnection.AddTrack(outputTrackRTX)
 
+			rtpRtxSender, err := peerConnection.AddTrack(outputTrackRTX)
+			if err != nil {
+				panic(err)
+			}
+	*/
 	// Read incoming RTCP packets
 	// Before these packets are returned they are processed by interceptors. For things
 	// like NACK this needs to be called.
