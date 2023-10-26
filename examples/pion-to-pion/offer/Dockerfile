@@ -3,6 +3,6 @@
 
 FROM golang:1.21
 
-RUN go install github.com/pion/webrtc/v4/examples/pion-to-pion/offer@latest
+RUN go install github.com/pyu1538/pion_webrtc/v4/examples/pion-to-pion/offer@latest
 
 CMD ["offer"]
